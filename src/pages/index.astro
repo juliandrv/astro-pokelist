@@ -1,0 +1,41 @@
+---
+import type { PokeListResponse } from "@interfaces/pokelist.response";
+
+import MainLayout from "@layouts/MainLayout.astro";
+import PokemonCard from "@components/pokemons/PokemonCard.astro";
+
+const title = "PokeList | Home";
+
+const resp = await fetch("https://pokeapi.co/api/v2/pokemon");
+const data = (await resp.json()) as PokeListResponse;
+---
+
+<MainLayout title={title}>
+	<h1 class="text-3xl">Pokémon List</h1>
+	<hr />
+
+	<section
+		aria-label="Pokémon List"
+		class="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-4 gap-4 mt-10"
+	>
+		{data.results.map(({ name, url }) => <PokemonCard name={name} url={url} />)}
+	</section>
+
+	<section class="flex mt-10 gap-6 items-center">
+		<a href="/pokemons/1" class="btn disabled"> Anteriores </a>
+		<a href="/pokemons/2" class="btn"> Siguientes </a>
+
+		<div class="flex flex-1"></div>
+		<span>Página 1</span>
+	</section>
+</MainLayout>
+
+<style>
+	.btn {
+		@apply bg-blue-500 py-2 px-4 text-white rounded;
+	}
+
+	.disabled {
+		@apply bg-gray-600 text-gray-400 pointer-events-none;
+	}
+</style>
