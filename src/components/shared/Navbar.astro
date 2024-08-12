@@ -6,34 +6,17 @@ const links = [
   },
   {
     name: "Favorites",
-    href: "/favorites",
+    href: "/favorites/",
   },
 ];
 
-const pathname = new URL(Astro.request.url).pathname;
-const currentPath = pathname.slice(1);
-
-console.log(currentPath);
+const currentPath = Astro.url.pathname;
 ---
 
 <nav class="shadow bg-slate-800">
   <div
     class="container flex items-center justify-center p-6 mx-auto text-gray-600 capitalize dark:text-gray-300"
   >
-    <!--  {
-      links.map((link) => (
-        <a
-          href={link.href}
-          class="text-gray-800 dark:text-gray-200  mx-1.5 sm:mx-6"
-          class:list={
-            currentPath === link.href ? "border-b-2 border-blue-500" : ""
-          }
-        >
-          {link.name}
-        </a>
-      ))
-    } -->
-
     {
       links.map(({ href, name }) => (
         <div>
@@ -41,7 +24,7 @@ console.log(currentPath);
             {name}
           </a>
 
-          {currentPath === href.slice(1) ? (
+          {currentPath === href ? (
             <div
               transition:name="menu-link"
               class="border-b-2 border-blue-500 mx-4"
