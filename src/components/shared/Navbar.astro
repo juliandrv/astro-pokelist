@@ -1,16 +1,19 @@
 ---
 const links = [
   {
-    name: "list",
+    name: "List",
     href: "/",
   },
   {
-    name: "favorites",
+    name: "Favorites",
     href: "/favorites",
   },
 ];
 
-const currentPath = Astro.url.pathname;
+const pathname = new URL(Astro.request.url).pathname;
+const currentPath = pathname.slice(1);
+
+console.log(currentPath);
 ---
 
 <nav class="shadow bg-slate-800">
@@ -34,11 +37,11 @@ const currentPath = Astro.url.pathname;
     {
       links.map(({ href, name }) => (
         <div>
-          <a href={href} class="text-gray-200  mx-1.5 sm:mx-6 capitalize">
+          <a href={href} class="text-gray-200  mx-1.5 sm:mx-6">
             {name}
           </a>
 
-          {currentPath.includes(name) ? (
+          {currentPath === href.slice(1) ? (
             <div
               transition:name="menu-link"
               class="border-b-2 border-blue-500 mx-4"
