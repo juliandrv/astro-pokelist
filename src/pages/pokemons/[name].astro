@@ -5,6 +5,7 @@ import type { PokeListResponse } from "@interfaces/pokelist.response";
 
 import MainLayout from "@layouts/MainLayout.astro";
 import PokemonCard from "@components/pokemons/PokemonCard.astro";
+import Title from "@components/shared/Title.astro";
 
 export const getStaticPaths = (async () => {
   const resp = await fetch("https://pokeapi.co/api/v2/pokemon?limit=151");
@@ -36,11 +37,13 @@ const imageSrc = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprit
 >
   <section class="mt-10 flex flex-col justify-center">
     <div>
-      <a href="/" class="hover:underline">&larr; Back</a>
-      <h1 class="text-5xl capitalize font-bold">
-        <small class="font-light">#{id} -</small>
-        {name}
-      </h1>
+      <button onclick="history.back()" class="text-blue-500 hover:underline"
+        >&larr; Back</button
+      >
+      <Title
+        ><span class="text-3xl font-light">#{id} - </span>
+        {nameCapitalized}</Title
+      >
     </div>
 
     <PokemonCard name={name} url={url} isBig />

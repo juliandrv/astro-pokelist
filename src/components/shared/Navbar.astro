@@ -1,0 +1,59 @@
+---
+const links = [
+  {
+    name: "List",
+    href: "/",
+  },
+  {
+    name: "Favorites",
+    href: "/favorites",
+  },
+];
+
+const currentPath = Astro.url.pathname;
+---
+
+<nav class="shadow bg-slate-800">
+  <div
+    class="container flex items-center justify-center p-6 mx-auto text-gray-600 capitalize dark:text-gray-300"
+  >
+    <!--  {
+      links.map((link) => (
+        <a
+          href={link.href}
+          class="text-gray-800 dark:text-gray-200  mx-1.5 sm:mx-6"
+          class:list={
+            currentPath === link.href ? "border-b-2 border-blue-500" : ""
+          }
+        >
+          {link.name}
+        </a>
+      ))
+    } -->
+
+    {
+      links.map(({ href, name }) => (
+        <div>
+          <a
+            href={href}
+            class="text-gray-800 dark:text-gray-200  mx-1.5 sm:mx-6"
+          >
+            {name}
+          </a>
+
+          {currentPath === href ? (
+            <div
+              transition:name="menu-link"
+              class="border-b-2 border-blue-500 mx-4"
+            />
+          ) : (
+            <div
+              transition:name="menu-link"
+              class="border-b-2 border-transparent"
+            />
+          )}
+        </div>
+      ))
+    }
+  </div>
+</nav>
