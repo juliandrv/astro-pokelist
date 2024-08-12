@@ -6,6 +6,7 @@ import type { PokeListResponse } from "@interfaces/pokelist.response";
 import MainLayout from "@layouts/MainLayout.astro";
 import PokemonCard from "@components/pokemons/PokemonCard.astro";
 import Title from "@components/shared/Title.astro";
+import { Icon } from "astro-icon/components";
 
 export const getStaticPaths = (async () => {
   const resp = await fetch("https://pokeapi.co/api/v2/pokemon?limit=151");
@@ -30,20 +31,78 @@ const audioSrc = `https://raw.githubusercontent.com/PokeAPI/cries/main/cries/pok
 const imageSrc = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${id}.png`;
 ---
 
+<script>
+  interface FavoritePokemon {
+    id: number;
+    name: string;
+  }
+
+  /* document.addEventListener("astro:before-preparation", () => {
+    console.log("astro:before-preparation");
+  });
+
+  document.addEventListener("astro:after-preparation", () => {
+    console.log("astro:after-preparation");
+  });
+
+  document.addEventListener("astro:before-swap", () => {
+    console.log("astro:before-swap");
+  });
+
+  document.addEventListener("astro:after-swap", () => {
+    console.log("astro:after-swap");
+  });
+
+  document.addEventListener("astro:page-load", () => {
+    console.log("hola");
+  }); */
+
+  const handlePageLoad = () => {
+    const btnFavorite = document.querySelector(
+      "#btn-favorite",
+    ) as HTMLButtonElement;
+
+    if (!btnFavorite) return;
+
+    const id = btnFavorite.dataset.id;
+    const name = btnFavorite.dataset.name;
+
+    btnFavorite.addEventListener("click", () => {
+      console.log(id, name);
+    });
+  };
+
+  document.addEventListener("astro:page-load", handlePageLoad);
+</script>
+
 <MainLayout
   title={`PokeList | #${id} - ${nameCapitalized}`}
   description={`Información sobre el pokémon ${nameCapitalized}`}
   image={imageSrc}
 >
   <section class="mt-10 flex flex-col justify-center">
-    <div>
-      <button onclick="history.back()" class="text-blue-500 hover:underline"
-        >&larr; Back</button
+    <div class="flex flex-row justify-between items-end">
+      <div>
+        <button onclick="history.back()" class="text-blue-500 hover:underline">
+          &larr; Back
+        </button>
+
+        <p class="text-3xl font-light">#{id}</p>
+
+        <Title>
+          {nameCapitalized}
+        </Title>
+      </div>
+
+      <button
+        id="btn-favorite"
+        class="mb-3 hover:animate-pulse"
+        data-id={id}
+        data-name={name}
       >
-      <Title
-        ><span class="text-3xl font-light">#{id} - </span>
-        {nameCapitalized}</Title
-      >
+        <Icon name="star" size={40} />
+        <Icon class="hidden" name="solid-star" size={40} />
+      </button>
     </div>
 
     <PokemonCard name={name} url={url} isBig />
