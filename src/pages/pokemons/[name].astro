@@ -58,17 +58,53 @@ const imageSrc = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprit
   }); */
 
   const handlePageLoad = () => {
+    let favoritePokemons: FavoritePokemon[] = JSON.parse(
+      localStorage.getItem("favorites") ?? "[]",
+    );
+
     const btnFavorite = document.querySelector(
       "#btn-favorite",
     ) as HTMLButtonElement;
 
     if (!btnFavorite) return;
 
-    const id = btnFavorite.dataset.id;
-    const name = btnFavorite.dataset.name;
+    const id = btnFavorite.dataset.id ?? "";
+    const name = btnFavorite.dataset.name ?? "";
+
+    const outlineStar = document.querySelector("[data-outline]") as SVGElement;
+    const fullStar = document.querySelector("[data-full]") as SVGElement;
+
+    const checkFavorite = () => {
+      const isFavorite = favoritePokemons.some((fav) => fav.name === name);
+
+      if (isFavorite) {
+        outlineStar.classList.add("hidden");
+        fullStar.classList.remove("hidden");
+      } else {
+        outlineStar.classList.remove("hidden");
+        fullStar.classList.add("hidden");
+      }
+    };
+
+    checkFavorite();
+
+    const toggleFavorite = () => {
+      const isFavorite = favoritePokemons.some((fav) => fav.name === name);
+
+      if (isFavorite) {
+        favoritePokemons = favoritePokemons.filter((fav) => fav.name !== name);
+      } else {
+        favoritePokemons.push({ id: +id, name });
+      }
+
+      localStorage.setItem("favorites", JSON.stringify(favoritePokemons));
+    };
 
     btnFavorite.addEventListener("click", () => {
-      console.log(id, name);
+      outlineStar.classList.toggle("hidden");
+      fullStar.classList.toggle("hidden");
+
+      toggleFavorite();
     });
   };
 
@@ -100,8 +136,8 @@ const imageSrc = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprit
         data-id={id}
         data-name={name}
       >
-        <Icon name="star" size={40} />
-        <Icon class="hidden" name="solid-star" size={40} />
+        <Icon data-outline name="star" size={40} />
+        <Icon data-full class="hidden" name="solid-star" size={40} />
       </button>
     </div>
 
