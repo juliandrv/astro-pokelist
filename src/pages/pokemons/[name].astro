@@ -1,12 +1,12 @@
 ---
 import type { GetStaticPaths } from "astro";
+import { Icon } from "astro-icon/components";
 
 import type { PokeListResponse } from "@interfaces/pokelist.response";
 
 import MainLayout from "@layouts/MainLayout.astro";
 import PokemonCard from "@components/pokemons/PokemonCard.astro";
 import Title from "@components/shared/Title.astro";
-import { Icon } from "astro-icon/components";
 
 export const getStaticPaths = (async () => {
   const resp = await fetch("https://pokeapi.co/api/v2/pokemon?limit=151");
@@ -32,10 +32,12 @@ const imageSrc = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprit
 ---
 
 <script>
-  interface FavoritePokemon {
+  import type { FavoritePokemon } from "@interfaces/favorite-pokemon";
+
+  /* interface FavoritePokemon {
     id: number;
     name: string;
-  }
+  } */
 
   /* document.addEventListener("astro:before-preparation", () => {
     console.log("astro:before-preparation");
